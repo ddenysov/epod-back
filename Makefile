@@ -1,7 +1,7 @@
 include .env
 export
 
-DC := docker-compose run php
+DC := docker-compose exec php
 DOCKER := docker
 OS := $(shell uname)
 
@@ -15,4 +15,7 @@ build-container:
 	@docker-compose build php
 
 ssh:
-	@$(DC) bash
+	@$(DC) sh
+
+console:
+	@$(DC) bin/console
