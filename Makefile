@@ -1,7 +1,7 @@
 include .env
 export
 
-DC := docker-compose exec php
+DC := docker-compose exec php-fpm
 DOCKER := docker
 OS := $(shell uname)
 
@@ -12,10 +12,10 @@ stop:
 	@docker-compose stop
 
 build-container:
-	@docker-compose build php
+	@docker-compose build php-fpm
 
 ssh:
-	@$(DC) sh
+	@$(DC) bash
 
 console:
 	@$(DC) bin/console
