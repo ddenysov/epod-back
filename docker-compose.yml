@@ -1,7 +1,9 @@
-version: "3.4"
+version: "3.9"
 
 services:
   php-fpm:
+    networks:
+      - backend
     build:
       context: .
       dockerfile: ./etc/phpfpm.Dockerfile
@@ -20,6 +22,8 @@ services:
       PHP_INI_SCAN_DIR: "/usr/local/etc/php/custom.d:/usr/local/etc/php/conf.d"
       XDEBUG_CONFIG: "client_host=${XDEBUG_REMOTE_HOST} client_port=9020 start_with_request=yes"
   nginx:
+    networks:
+      - backend
     image: nginx:latest
     links:
       - php-fpm
@@ -30,3 +34,8 @@ services:
       - "2000:80"
     expose:
       - 80
+
+networks:
+  backend:
+    name: backend
+    driver: bridge
