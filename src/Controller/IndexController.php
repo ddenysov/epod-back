@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Builder\Element;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,11 +12,38 @@ class IndexController
      *
      * @return JsonResponse
      */
-    #[Route('/blog', name: 'blog_list')]
+    #[Route('/', name: 'index')]
     public function index(): JsonResponse
     {
-        return new JsonResponse([
-            'ololo' => 'trololo',
-        ]);
+        $root = new Element('template');
+
+        $header = new Element('ui-header');
+
+        $body = new Element('ui-body');
+        $searchSection = new Element('ui-section');
+        $eventsSection = new Element('ui-section');
+        $events = new Element('app-events');
+        $events->appendChild(new Element('app-event-preview'));
+        $events->appendChild(new Element('app-event-preview'));
+        $events->appendChild(new Element('app-event-preview'));
+        $events->appendChild(new Element('app-event-preview'));
+        $events->appendChild(new Element('app-event-preview'));
+        $events->appendChild(new Element('app-event-preview'));
+        $events->appendChild(new Element('app-event-preview'));
+        $events->appendChild(new Element('app-event-preview'));
+        $events->appendChild(new Element('app-event-preview'));
+        $events->setProp('filters', json_encode(['MTB', 'Road']));
+        $eventsSection->appendChild($events);
+
+        $body->appendChild($searchSection);
+        $body->appendChild($eventsSection);
+
+        $footer = new Element('ui-footer');
+
+        $root->appendChild($header);
+        $root->appendChild($body);
+        $root->appendChild($footer);
+
+        return new JsonResponse($root->toArray());
     }
 }
