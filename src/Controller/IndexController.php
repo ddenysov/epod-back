@@ -15,7 +15,7 @@ class IndexController
     #[Route('/', name: 'index')]
     public function index(): JsonResponse
     {
-        $root = new Element('template');
+        $root = new Element('div');
 
         $header = new Element('ui-header');
 
@@ -32,7 +32,7 @@ class IndexController
         $events->appendChild(new Element('app-event-preview'));
         $events->appendChild(new Element('app-event-preview'));
         $events->appendChild(new Element('app-event-preview'));
-        $events->setProp('filters', json_encode(['MTB', 'Road']));
+        //$events->setProp('filters', json_encode(['MTB', 'Road']));
         $eventsSection->appendChild($events);
 
         $body->appendChild($searchSection);
