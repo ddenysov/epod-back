@@ -20,8 +20,7 @@ class IndexController
         $header = new Element('ui-header');
 
         $body = new Element('ui-body');
-        $searchSection = new Element('ui-section');
-        $eventsSection = new Element('ui-section');
+        $searchSection = new Element('ui-hero-banner');
         $events = new Element('app-events');
         $events->appendChild(new Element('app-event-preview'));
         $events->appendChild(new Element('app-event-preview'));
@@ -33,10 +32,8 @@ class IndexController
         $events->appendChild(new Element('app-event-preview'));
         $events->appendChild(new Element('app-event-preview'));
         //$events->setProp('filters', json_encode(['MTB', 'Road']));
-        $eventsSection->appendChild($events);
-
         $body->appendChild($searchSection);
-        $body->appendChild($eventsSection);
+        $body->appendChild($events);
 
         $footer = new Element('ui-footer');
 
