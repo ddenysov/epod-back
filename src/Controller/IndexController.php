@@ -21,8 +21,10 @@ class IndexController
 
         $body = new Element('ui-body');
         $searchSection = new Element('ui-hero-banner');
+        $select1 = new Element('ui-select');
+        $searchSection->appendChild($select1);
+
         $events = new Element('app-events');
-        $events->appendChild(new Element('app-event-preview'));
         $events->appendChild(new Element('app-event-preview'));
         $events->appendChild(new Element('app-event-preview'));
         $events->appendChild(new Element('app-event-preview'));
