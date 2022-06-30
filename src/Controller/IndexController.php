@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Component\Events\EventsList;
 use App\Service\Builder\Element;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,18 +25,10 @@ class IndexController
         $select1 = new Element('ui-select');
         $searchSection->appendChild($select1);
 
-        $events = new Element('app-events');
-        $events->appendChild(new Element('app-event-preview'));
-        $events->appendChild(new Element('app-event-preview'));
-        $events->appendChild(new Element('app-event-preview'));
-        $events->appendChild(new Element('app-event-preview'));
-        $events->appendChild(new Element('app-event-preview'));
-        $events->appendChild(new Element('app-event-preview'));
-        $events->appendChild(new Element('app-event-preview'));
-        $events->appendChild(new Element('app-event-preview'));
+
         //$events->setProp('filters', json_encode(['MTB', 'Road']));
         $body->appendChild($searchSection);
-        $body->appendChild($events);
+        $body->appendChild((new EventsList())->create());
 
         $footer = new Element('ui-footer');
 
@@ -44,5 +37,11 @@ class IndexController
         $root->appendChild($footer);
 
         return new JsonResponse($root->toArray());
+    }
+
+    #[Route('/events', name: 'events')]
+    public function events(): JsonResponse
+    {
+        return new JsonResponse((new EventsList())->create()->toArray());
     }
 }

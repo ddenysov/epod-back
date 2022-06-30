@@ -9,7 +9,7 @@ class Element
     /**
      * @var array
      */
-    private array $props = [];
+    private array $input = [];
 
     /**
      * @var array
@@ -18,43 +18,26 @@ class Element
 
     /**
      * @param string $tag
+     * @param array $input
      */
-    public function __construct(private string $tag) { }
+    public function __construct(private string $tag, array $input = [])
+    {
+        $this->input = $input;
+    }
 
     /**
      * @return array
      */
-    #[ArrayShape(['tag' => "string", 'props' => "array", 'children' => "array"])]
+    #[ArrayShape(['tag' => "string", 'input' => "array", 'children' => "array"])]
     public function toArray(): array
     {
         return [
             'tag' => $this->tag,
-            'props' => $this->props,
+            'input' => $this->input,
             'children' => array_map(function (Element $child) {
                 return $child->toArray();
             }, $this->children),
         ];
-    }
-
-    /**
-     * @param string $key
-     * @param string $value
-     * @return $this
-     */
-    public function setProp(string $key, string $value): static
-    {
-        $this->props[$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param string $key
-     * @return string
-     */
-    public function getProp(string $key): string
-    {
-        return $this->props[$key];
     }
 
     /**
