@@ -18,8 +18,6 @@ class IndexController
     {
         $root = new Element('div');
 
-        $header = new Element('ui-header');
-
         $body = new Element('ui-body');
         $searchSection = new Element('ui-hero-banner');
         $select1 = new Element('ui-select');
@@ -30,11 +28,7 @@ class IndexController
         $body->appendChild($searchSection);
         $body->appendChild((new EventsList())->create());
 
-        $footer = new Element('ui-footer');
-
-        $root->appendChild($header);
         $root->appendChild($body);
-        $root->appendChild($footer);
 
         return new JsonResponse($root->toArray());
     }
