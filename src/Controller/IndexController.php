@@ -19,14 +19,16 @@ class IndexController
         $root = new Element('div');
 
         $body = new Element('ui-body');
+        $wrapper = new Element('ui-wrapper');
         $searchSection = new Element('ui-hero-banner');
         $select1 = new Element('ui-select');
         $searchSection->appendChild($select1);
 
 
         //$events->setProp('filters', json_encode(['MTB', 'Road']));
-        $body->appendChild($searchSection);
-        $body->appendChild((new EventsList())->create());
+        $wrapper->appendChild($searchSection);
+        $wrapper->appendChild((new EventsList())->create());
+        $body->appendChild($wrapper);
 
         $root->appendChild($body);
 
