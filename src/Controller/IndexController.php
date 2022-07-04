@@ -35,6 +35,22 @@ class IndexController
         return new JsonResponse($root->toArray());
     }
 
+    #[Route('/event/create', name: 'event.create')]
+    public function eventCreate(): JsonResponse
+    {
+        $root = new Element('div');
+
+        $body = new Element('ui-body');
+        $wrapper = new Element('ui-wrapper');
+        $wrapper->appendChild(new Element('ui-breadcrumbs'));
+        $wrapper->appendChild(new Element('ui-steps'));
+        $body->appendChild($wrapper);
+
+        $root->appendChild($body);
+
+        return new JsonResponse($root->toArray());
+    }
+
     #[Route('/events', name: 'events')]
     public function events(): JsonResponse
     {
