@@ -42,8 +42,27 @@ class IndexController
 
         $body = new Element('ui-body');
         $wrapper = new Element('ui-wrapper');
+
+        $steps = new Element('ui-steps');
+        $steps->appendChild(new Element('ui-step', [
+            'props' => [
+                'title' => 'Деталі',
+            ]
+        ]));
+        $steps->appendChild(new Element('ui-step', [
+            'props' => [
+                'title' => 'Реєстрація',
+            ]
+        ]));
+        $steps->appendChild(new Element('ui-step', [
+            'props' => [
+                'title' => 'Налаштування',
+            ]
+        ]));
+
+
         $wrapper->appendChild(new Element('ui-breadcrumbs'));
-        $wrapper->appendChild(new Element('ui-steps'));
+        $wrapper->appendChild($steps);
         $body->appendChild($wrapper);
 
         $root->appendChild($body);
