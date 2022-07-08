@@ -43,12 +43,26 @@ class IndexController
         $body = new Element('ui-body');
         $wrapper = new Element('ui-wrapper');
 
-        $steps = new Element('ui-steps');
-        $steps->appendChild(new Element('ui-step', [
+        $steps = new Element('ui-step-wizard');
+        $firstStep = new Element('ui-step', [
             'props' => [
                 'title' => 'Деталі',
             ]
-        ]));
+        ]);
+
+        $form = new Element('ui-form');
+        $formItem1 = new Element('ui-form-item', [
+            'props' => [
+                'label' => 'Дайте назву події:',
+                'description' => 'Подивіться, як ваше ім’я відображається на сторінці події, а також список усіх місць, де використовуватиметься ваша назва події.  <a href="#" class="a-link">Взнати більше</a>'
+            ]
+        ], [
+            new Element('ui-text-input')
+        ]);
+        $form->appendChild($formItem1);
+        $firstStep->appendChild($form);
+
+        $steps->appendChild($firstStep);
         $steps->appendChild(new Element('ui-step', [
             'props' => [
                 'title' => 'Реєстрація',

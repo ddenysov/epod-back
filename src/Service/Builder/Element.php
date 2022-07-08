@@ -7,22 +7,12 @@ use JetBrains\PhpStorm\ArrayShape;
 class Element
 {
     /**
-     * @var array
-     */
-    private array $input = [];
-
-    /**
-     * @var array
-     */
-    private array $children = [];
-
-    /**
      * @param string $tag
      * @param array $input
+     * @param array $children
      */
-    public function __construct(private string $tag, array $input = [])
+    public function __construct(private string $tag, private array $input = [], private array $children = [])
     {
-        $this->input = $input;
     }
 
     /**
