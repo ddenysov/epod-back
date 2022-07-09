@@ -47,6 +47,26 @@ class IndexController
         $firstStep = new Element('ui-step', [
             'props' => [
                 'title' => 'Деталі',
+                'form' => [
+                    'fields' => [
+                        [
+                            'name' => 'name',
+                            'value' => '',
+                            'validation' => [
+                                'required' => true,
+                                'message' => 'Будь ласка введіть назву події',
+                            ]
+                        ],
+                        [
+                            'name' => 'description',
+                            'value' => '',
+                            'validation' => [
+                                'required' => true,
+                                'message' => 'Будь ласка введіть опис події',
+                            ]
+                        ]
+                    ]
+                ]
             ]
         ]);
 
