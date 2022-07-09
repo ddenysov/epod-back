@@ -95,6 +95,26 @@ class IndexController
         $steps->appendChild(new Element('ui-step', [
             'props' => [
                 'title' => 'Реєстрація',
+                'form' => [
+                    'fields' => [
+                        [
+                            'name' => 'name',
+                            'value' => '',
+                            'validation' => [
+                                'required' => true,
+                                'message' => 'Будь ласка введіть назву події',
+                            ]
+                        ],
+                        [
+                            'name' => 'description',
+                            'value' => '',
+                            'validation' => [
+                                'required' => true,
+                                'message' => 'Будь ласка введіть опис події',
+                            ]
+                        ]
+                    ]
+                ]
             ]
         ]));
         $steps->appendChild(new Element('ui-step', [
