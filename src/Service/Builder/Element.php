@@ -76,9 +76,9 @@ class Element
 
     /**
      * @param string $key
-     * @return string
+     * @return string|array
      */
-    public function getProp(string $key): string
+    public function getProp(string $key): string|array
     {
         return $this->input['props'][$key];
     }
