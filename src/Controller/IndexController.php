@@ -9,6 +9,7 @@ use App\Service\Builder\Element;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validation;
 
 class IndexController extends AbstractController
@@ -151,6 +152,12 @@ class IndexController extends AbstractController
 
         $form = $this->createForm(EventType::class, $task);
 
+        dd($this->container->get('form.factory'));
+
+        $this->map = [
+            NotBlank::class => ['required' => true],
+        ];
+
         $result = [];
         $items = $form->all();
         foreach ($items as $item) {
@@ -159,9 +166,14 @@ class IndexController extends AbstractController
                 'type' => substr(strrchr(get_class($item->getConfig()->getType()->getInnerType()), '\\'), 1),
                 'label' => $item->getConfig()->getOption('label'),
                 'description' => $item->getConfig()->getOption('help'),
-                'validation' => array_map(function ($value) {
-                    return get_object_vars($value);
-                }, $item->getConfig()->getOption('constraints')),
+                'validation' => array_reduce($item->getConfig()->getOption('constraints') , function ($prev, $curr) {
+                    if (isset($this->map[get_class($curr)])) {
+                        $val = $this->map[get_class($curr)];
+                        $prev = array_merge_recursive($prev, $val);
+                    }
+
+                    return $prev;
+                }, []),
             ];
             /*dump($item->createView());
             dump($item->getConfig()->getType());

@@ -12,7 +12,7 @@ class Test extends TestCase
         $root = new Element('template');
         $this->assertEquals([
             'tag' => 'template',
-            'props' => [],
+            'input' => [],
             'children' => [],
         ], $root->toArray());
     }
@@ -23,8 +23,10 @@ class Test extends TestCase
         $root->setProp('name', 'New Component');
         $this->assertEquals([
             'tag' => 'template',
-            'props' => [
-                'name' => 'New Component'
+            'input' => [
+                'props' => [
+                    'name' => 'New Component'
+                ],
             ],
             'children' => [],
         ], $root->toArray());
@@ -43,18 +45,20 @@ class Test extends TestCase
 
         $this->assertEquals([
             'tag' => 'template',
-            'props' => [
-                'name' => 'New Component'
+            'input' => [
+                'props' => [
+                    'name' => 'New Component'
+                ],
             ],
             'children' => [
                 [
                     'tag' => 'ui-panel',
-                    'props' => [],
+                    'input' => [],
                     'children' => [],
                 ],
                 [
                     'tag' => 'ui-panel',
-                    'props' => [],
+                    'input' => [],
                     'children' => [],
                 ]
             ],
@@ -74,22 +78,24 @@ class Test extends TestCase
 
         $this->assertEquals([
             'tag' => 'template',
-            'props' => [
-                'name' => 'New Component'
+            'input' => [
+                'props' => [
+                    'name' => 'New Component'
+                ],
             ],
             'children' => [
                 [
                     'tag' => 'ui-panel',
-                    'props' => [],
+                    'input' => [],
                     'children' => [],
                 ],
                 [
                     'tag' => 'ui-panel',
-                    'props' => [],
+                    'input' => [],
                     'children' => [
                         [
                             'tag' => 'ui-form',
-                            'props' => [],
+                            'input' => [],
                             'children' => [],
                         ]
                     ],

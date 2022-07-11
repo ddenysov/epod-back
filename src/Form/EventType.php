@@ -16,7 +16,7 @@ class EventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', ChoiceType::class, [
+            ->add('title', TextType::class, [
                 'label' => 'ololo trololo',
                 'help' => '<a>alalalalal</a>',
                 'constraints' => [
@@ -24,7 +24,14 @@ class EventType extends AbstractType
                     new Length(['min' => 3]),
                 ],
             ])
-            ->add('description')
+            ->add('description', TextType::class, [
+                'label' => 'ololo trololo',
+                'help' => '<a>alalalalal</a>',
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['min' => 3]),
+                ],
+            ])
             ->add('start_date')
             ->add('end_date')
             ->add('image')

@@ -11,7 +11,11 @@ class Element
      * @param array $input
      * @param array $children
      */
-    public function __construct(private string $tag, private array $input = [], private array $children = [])
+    public function __construct(
+        private string $tag,
+        private array $input = [],
+        private array $children = []
+    )
     {
     }
 
@@ -56,5 +60,26 @@ class Element
         $this->children[] = $element;
 
         return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return $this
+     */
+    public function setProp(string $key, string $value): static
+    {
+        $this->input['props'][$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @return string
+     */
+    public function getProp(string $key): string
+    {
+        return $this->input['props'][$key];
     }
 }
