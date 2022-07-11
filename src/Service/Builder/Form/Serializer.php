@@ -3,6 +3,7 @@
 namespace App\Service\Builder\Form;
 
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 
 class Serializer
 {
@@ -10,7 +11,7 @@ class Serializer
      * @param Form $form
      * @return array
      */
-    public function serialize(Form $form): array
+    public function serialize(FormInterface $form): array
     {
         $resolver = new SymfonyRuleResolver();
         $result = [];
@@ -23,11 +24,21 @@ class Serializer
                 'name' => $item->getName(),
                 'type' => $uiType,
                 'value' => $item->getData(),
-                'label' => $item->getConfig()->getOption('label'),
+                'label' => $this->resolveLabel($item),
                 'description' => $item->getConfig()->getOption('help'),
-                'rules' => $resolver->resolve($item),
+                'rules' => $resolver->resolve($item)['rules'],
+                'messages' => $resolver->resolve($item)['messages'],
             ];
         }
         return $result;
+    }
+
+    /**
+     * @param FormInterface $item
+     * @return string
+     */
+    private function resolveLabel(FormInterface $item): string
+    {
+        return $item->getConfig()->getOption('label') ?? str_ireplace('_', ' ', ucfirst($item->getName()));
     }
 }

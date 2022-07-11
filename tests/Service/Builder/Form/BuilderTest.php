@@ -25,7 +25,7 @@ class BuilderTest extends KernelTestCase
         $title = $root->getChild(0);
         $this->assertEquals('ui-form-item', $title->getTag());
         $this->assertEquals('ololo trololo', $title->getProp('label'));
-        $this->assertEquals('ololo trololo', $title->getProp('description'));
+        $this->assertEquals('<a>alalalalal</a>', $title->getProp('description'));
         $this->assertEquals(['required' => true], $title->getProp('rules'));
         $this->assertEquals('ololo', $title->getChild(0)->getProp('value'));
         $this->assertEquals('text-type', $title->getChild(0)->getTag());

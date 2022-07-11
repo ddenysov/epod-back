@@ -6,6 +6,7 @@ use App\Component\Events\EventsList;
 use App\Entity\Event;
 use App\Form\EventType;
 use App\Service\Builder\Element;
+use App\Service\Builder\Form\FormBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,49 +53,14 @@ class IndexController extends AbstractController
         $firstStep = new Element('ui-step', [
             'props' => [
                 'title' => 'Деталі',
-                'form' => [
-                    'fields' => [
-                        [
-                            'name' => 'name',
-                            'value' => '',
-                            'validation' => [
-                                'required' => true,
-                                'message' => 'Будь ласка введіть назву події',
-                            ]
-                        ],
-                        [
-                            'name' => 'description',
-                            'value' => '',
-                            'validation' => [
-                                'required' => true,
-                                'message' => 'Будь ласка введіть опис події',
-                            ]
-                        ]
-                    ]
-                ]
             ]
         ]);
 
-        $formItem1 = new Element('ui-form-item', [
-            'props' => [
-                'name' => 'name',
-                'label' => 'Дайте назву події1:',
-                'description' => 'Подивіться, як ваше ім’я відображається на сторінці події, а також список усіх місць, де використовуватиметься ваша назва події.  <a href="#" class="a-link">Взнати більше</a>'
-            ]
-        ], [
-            new Element('ui-text-input')
-        ]);
-        $formItem2 = new Element('ui-form-item', [
-            'props' => [
-                'name' => 'description',
-                'label' => 'Будь ласка, опишіть свою подію:',
-                'description' => 'Напишіть кілька слів нижче, щоб описати свою подію та надайте будь-яку додаткову інформацію, таку як розклад, маршрут або будь-які спеціальні інструкції, необхідні для відвідування вашої події.  <a href="#" class="a-link">Взнати більше</a>'
-            ]
-        ], [
-            new Element('ui-text-input')
-        ]);
-        $firstStep->appendChild($formItem1);
-        $firstStep->appendChild($formItem2);
+        $event = new Event();
+        $form = $this->createForm(EventType::class, $event);
+        $formBuilder = new FormBuilder();
+        $formElement = $formBuilder->build($form);
+        $firstStep->appendChild($formElement);
 
         $steps->appendChild($firstStep);
         $steps->appendChild(new Element('ui-step', [
@@ -149,7 +115,6 @@ class IndexController extends AbstractController
     {
         // creates a task object and initializes some data for this example
         $task = new Event();
-
         $form = $this->createForm(EventType::class, $task);
 
         $this->map = [
