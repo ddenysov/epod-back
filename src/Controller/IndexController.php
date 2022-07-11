@@ -3,11 +3,15 @@
 namespace App\Controller;
 
 use App\Component\Events\EventsList;
+use App\Entity\Event;
+use App\Form\EventType;
 use App\Service\Builder\Element;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validation;
 
-class IndexController
+class IndexController extends AbstractController
 {
     /**
      *
@@ -73,7 +77,7 @@ class IndexController
         $formItem1 = new Element('ui-form-item', [
             'props' => [
                 'name' => 'name',
-                'label' => 'Дайте назву події:',
+                'label' => 'Дайте назву події1:',
                 'description' => 'Подивіться, як ваше ім’я відображається на сторінці події, а також список усіх місць, де використовуватиметься ваша назва події.  <a href="#" class="a-link">Взнати більше</a>'
             ]
         ], [
@@ -137,5 +141,39 @@ class IndexController
     public function events(): JsonResponse
     {
         return new JsonResponse((new EventsList())->create()->toArray());
+    }
+
+    #[Route('/form', name: 'form')]
+    public function form()
+    {
+        // creates a task object and initializes some data for this example
+        $task = new Event();
+
+        $form = $this->createForm(EventType::class, $task);
+
+        $result = [];
+        $items = $form->all();
+        foreach ($items as $item) {
+            $result[$item->getName()] = [
+                'name' => $item->getName(),
+                'type' => substr(strrchr(get_class($item->getConfig()->getType()->getInnerType()), '\\'), 1),
+                'label' => $item->getConfig()->getOption('label'),
+                'description' => $item->getConfig()->getOption('help'),
+                'validation' => array_map(function ($value) {
+                    return get_object_vars($value);
+                }, $item->getConfig()->getOption('constraints')),
+            ];
+            /*dump($item->createView());
+            dump($item->getConfig()->getType());
+            dump($item->getConfig()->getOptions());*/
+        }
+
+        dd($result);
+
+        dd($form->get('title')->getConfig()->getOptions());
+
+        dd($form->get('title')->createView());
+
+        dd('OLOLO');
     }
 }

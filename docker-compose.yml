@@ -21,6 +21,21 @@ services:
       PHP_IDE_CONFIG: ${PHP_IDE_CONFIG}
       PHP_INI_SCAN_DIR: "/usr/local/etc/php/custom.d:/usr/local/etc/php/conf.d"
       XDEBUG_CONFIG: "client_host=${XDEBUG_REMOTE_HOST} client_port=9020 start_with_request=yes"
+
+  mysql:
+    image: mysql:oracle
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=app
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=password
+    ports:
+      - "3310:3306"
+    volumes:
+      - ./var/mysql-data:/var/lib/mysql:cached
+    networks:
+      - backend
+
   nginx:
     networks:
       - backend
