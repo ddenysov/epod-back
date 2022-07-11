@@ -152,8 +152,6 @@ class IndexController extends AbstractController
 
         $form = $this->createForm(EventType::class, $task);
 
-        dd($this->container->get('form.factory'));
-
         $this->map = [
             NotBlank::class => ['required' => true],
         ];
@@ -161,20 +159,7 @@ class IndexController extends AbstractController
         $result = [];
         $items = $form->all();
         foreach ($items as $item) {
-            $result[$item->getName()] = [
-                'name' => $item->getName(),
-                'type' => substr(strrchr(get_class($item->getConfig()->getType()->getInnerType()), '\\'), 1),
-                'label' => $item->getConfig()->getOption('label'),
-                'description' => $item->getConfig()->getOption('help'),
-                'validation' => array_reduce($item->getConfig()->getOption('constraints') , function ($prev, $curr) {
-                    if (isset($this->map[get_class($curr)])) {
-                        $val = $this->map[get_class($curr)];
-                        $prev = array_merge_recursive($prev, $val);
-                    }
-
-                    return $prev;
-                }, []),
-            ];
+            dd($item);
             /*dump($item->createView());
             dump($item->getConfig()->getType());
             dump($item->getConfig()->getOptions());*/
