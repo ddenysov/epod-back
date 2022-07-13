@@ -32,11 +32,11 @@ class EventType extends AbstractType
                     new Length(['min' => 3]),
                 ],
             ])
-            ->add('start_date')
-            ->add('end_date')
-            ->add('image')
-            ->add('lat')
-            ->add('lon')
+            ->add('start_date', TextType::class)
+            ->add('end_date', TextType::class)
+            ->add('image', TextType::class)
+            ->add('lat', TextType::class)
+            ->add('lon', TextType::class)
         ;
     }
 

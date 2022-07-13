@@ -13,27 +13,27 @@ class FormBuilder
         $serializer = new Serializer();
         $serializedForm = $serializer->serialize($form);
 
+        $model = [];
+        foreach ($serializedForm as $key => $value) {
+            $model[$key] = $value['value'];
+        }
+
         $root = new Element('ui-form', [
             'props' => [
-                'model' => array_fill_keys(array_keys($serializedForm), ''),
+                'model' => $model,
             ]
         ]);
 
         foreach ($serializedForm as $fieldData) {
-            $fieldElement = new Element('ui-form-item', [
+            $fieldElement = new Element($fieldData['type'], [
                 'props' => [
+                    'value' => $fieldData['value'],
                     'name' => $fieldData['name'],
                     'label' => $fieldData['label'],
                     'description' => $fieldData['description'],
                     'rules' => empty($fieldData['rules']) ? new \stdClass() : $fieldData['rules'],
                     'messages' => empty($fieldData['messages']) ? new \stdClass() : $fieldData['messages'],
-                ]
-            ], [
-                new Element($fieldData['type'], [
-                    'props' => [
-                        'value' => $fieldData['value'],
-                    ],
-                ]),
+                ],
             ]);
             $root->appendChild($fieldElement);
         }

@@ -53,10 +53,13 @@ class IndexController extends AbstractController
         $firstStep = new Element('ui-step', [
             'props' => [
                 'title' => 'Деталі',
+                'index' => 0,
             ]
         ]);
 
         $event = new Event();
+        $event->setTitle('trololo');
+
         $form = $this->createForm(EventType::class, $event);
         $formBuilder = new FormBuilder();
         $formElement = $formBuilder->build($form);
@@ -66,6 +69,7 @@ class IndexController extends AbstractController
         $steps->appendChild(new Element('ui-step', [
             'props' => [
                 'title' => 'Реєстрація',
+                'index' => 1,
                 'form' => [
                     'fields' => [
                         [
@@ -91,6 +95,7 @@ class IndexController extends AbstractController
         $steps->appendChild(new Element('ui-step', [
             'props' => [
                 'title' => 'Налаштування',
+                'index' => 3,
             ]
         ]));
 
