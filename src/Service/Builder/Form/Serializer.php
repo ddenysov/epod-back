@@ -14,13 +14,17 @@ class Serializer
     public function serialize(FormInterface $form): array
     {
         $resolver = new SymfonyRuleResolver();
-        $result = [];
+        $result = [
+            'name' => $form->getName(),
+            'model' => [],
+            'children' => [],
+        ];
         $items = $form->all();
         foreach ($items as $item) {
             $normalType = substr(strrchr(get_class($item->getConfig()->getType()->getInnerType()), '\\'), 1);
             $uiType = strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $normalType));
-
-            $result[$item->getName()] = [
+            $result['model'][$item->getName()] = $item->getData();
+            $result['children'][$item->getName()] = [
                 'name' => $item->getName(),
                 'type' => $uiType,
                 'value' => $item->getData(),
