@@ -59,6 +59,7 @@ class IndexController extends AbstractController
 
         $event = new Event();
         $event->setTitle('trololo');
+        $event->setDescription('alalal');
 
         $form = $this->createForm(EventType::class, $event);
         $formBuilder = new FormBuilder();
