@@ -15,14 +15,12 @@ class Event
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\NotBlank]
     private $title;
 
     #[ORM\Column(type: 'text')]
     private $description;
 
     #[ORM\Column(type: 'datetime')]
-    #[Assert\NotBlank]
     private $start_date;
 
     #[ORM\Column(type: 'datetime', nullable: true)]

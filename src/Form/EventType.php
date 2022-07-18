@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Event;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,11 +33,20 @@ class EventType extends AbstractType
                     new Length(['min' => 3]),
                 ],
             ])
-            ->add('start_date', TextType::class)
+            ->add('start_date', DateTimeType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                ],
+            ])
             ->add('end_date', TextType::class)
             ->add('image', TextType::class)
             ->add('lat', TextType::class)
-            ->add('lon', TextType::class)
+            ->add('lon', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['min' => 3]),
+                ],
+            ])
         ;
     }
 

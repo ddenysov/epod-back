@@ -7,10 +7,15 @@ use App\Entity\Event;
 use App\Form\EventType;
 use App\Service\Builder\Element;
 use App\Service\Builder\Form\FormBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validation;
 
 class IndexController extends AbstractController
@@ -19,20 +24,20 @@ class IndexController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route('/', name: 'index')]
+    #[Route('/api', name: 'index')]
     public function index(): JsonResponse
     {
         $root = new Element('div');
 
         $body = new Element('ui-body');
         $wrapper = new Element('ui-wrapper');
-/*        $searchSection = new Element('ui-hero-banner');
-        $select1 = new Element('ui-select');
-        $searchSection->appendChild($select1);
+        /*        $searchSection = new Element('ui-hero-banner');
+                $select1 = new Element('ui-select');
+                $searchSection->appendChild($select1);
 
 
-        //$events->setProp('filters', json_encode(['MTB', 'Road']));
-        $wrapper->appendChild($searchSection);*/
+                //$events->setProp('filters', json_encode(['MTB', 'Road']));
+                $wrapper->appendChild($searchSection);*/
         $wrapper->appendChild((new EventsList())->create());
         $body->appendChild($wrapper);
 
@@ -41,7 +46,7 @@ class IndexController extends AbstractController
         return new JsonResponse($root->toArray());
     }
 
-    #[Route('/event/create', name: 'event.create')]
+    #[Route('/api/event/create', name: 'event.create')]
     public function eventCreate(): JsonResponse
     {
         $root = new Element('div');
@@ -69,34 +74,14 @@ class IndexController extends AbstractController
         $steps->appendChild($firstStep);
         $steps->appendChild(new Element('ui-step', [
             'props' => [
-                'title' => 'Реєстрація',
+                'title' => 'Деталі',
                 'index' => 1,
-                'form' => [
-                    'fields' => [
-                        [
-                            'name' => 'name',
-                            'value' => '',
-                            'validation' => [
-                                'required' => true,
-                                'message' => 'Будь ласка введіть назву події',
-                            ]
-                        ],
-                        [
-                            'name' => 'description',
-                            'value' => '',
-                            'validation' => [
-                                'required' => true,
-                                'message' => 'Будь ласка введіть опис події',
-                            ]
-                        ]
-                    ]
-                ]
             ]
         ]));
         $steps->appendChild(new Element('ui-step', [
             'props' => [
                 'title' => 'Налаштування',
-                'index' => 3,
+                'index' => 2,
             ]
         ]));
 
@@ -110,13 +95,13 @@ class IndexController extends AbstractController
         return new JsonResponse($root->toArray());
     }
 
-    #[Route('/events', name: 'events')]
+    #[Route('/api/events', name: 'events')]
     public function events(): JsonResponse
     {
         return new JsonResponse((new EventsList())->create()->toArray());
     }
 
-    #[Route('/form', name: 'form')]
+    #[Route('/api/form', name: 'form_test')]
     public function form()
     {
         // creates a task object and initializes some data for this example
@@ -127,21 +112,44 @@ class IndexController extends AbstractController
             NotBlank::class => ['required' => true],
         ];
 
-        $result = [];
-        $items = $form->all();
-        foreach ($items as $item) {
-            dd($item);
-            /*dump($item->createView());
-            dump($item->getConfig()->getType());
-            dump($item->getConfig()->getOptions());*/
-        }
 
-        dd($result);
-
-        dd($form->get('title')->getConfig()->getOptions());
+        dd($form->get('start_date'));
 
         dd($form->get('title')->createView());
 
         dd('OLOLO');
+    }
+
+    #[Route(
+        '/api/form/store',
+        name: 'form',
+        methods: ['POST', 'GET'],
+        format: 'json'
+    ), ]
+    public function storeFirst(Request $request, ManagerRegistry $manager): JsonResponse
+    {
+        $event = new Event();
+        $form = $this->createForm(EventType::class, $event);
+
+        $form->submit($request->toArray());
+
+        $errors = [];
+        $valid = true;
+        foreach ($form->all() as $item) {
+            $errors[$item->getName()] = [];
+            if(!$item->isValid()) {
+                $valid = false;
+                $errors[$item->getName()][] = $item->getErrors()->current()->getMessage();
+            }
+        }
+
+        if (!$valid) {
+            return new JsonResponse(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $manager->getManager()->persist($event);
+        $manager->getManager()->flush();
+
+        return new JsonResponse([], Response::HTTP_CREATED);
     }
 }
