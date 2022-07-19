@@ -29,11 +29,8 @@ class Event
     #[ORM\Column(type: 'text', nullable: true)]
     private $image;
 
-    #[ORM\Column(type: 'float')]
-    private $lat;
-
-    #[ORM\Column(type: 'float')]
-    private $lon;
+    #[ORM\Column(type: 'json')]
+    private $location;
 
     public function getId(): ?int
     {
@@ -54,6 +51,7 @@ class Event
 
     public function getDescription(): ?string
     {
+        //dd(debug_backtrace());
         return $this->description;
     }
 
@@ -100,35 +98,23 @@ class Event
         return $this;
     }
 
-    public function getLat(): ?float
+    /**
+     * @return array
+     */
+    public function getLocation()
     {
-        return $this->lat;
+        return $this->location;
     }
 
-    public function setLat(float $lat): self
+    /**
+     * @param array $location
+     * @return Event
+     */
+    public function setLocation($location): self
     {
-        $this->lat = $lat;
+        //dd(debug_backtrace());
+        $this->location = $location;
 
         return $this;
-    }
-
-    public function getLon(): ?float
-    {
-        return $this->lon;
-    }
-
-    public function setLon(float $lon): self
-    {
-        $this->lon = $lon;
-
-        return $this;
-    }
-
-    public function getLocation(): array
-    {
-        return [
-            'lat' => $this->lat,
-            'lon' => $this->lon,
-        ];
     }
 }
