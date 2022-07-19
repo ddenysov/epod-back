@@ -32,6 +32,7 @@ class Serializer
                 'description' => $item->getConfig()->getOption('help'),
                 'rules' => $resolver->resolve($item)['rules'],
                 'messages' => $resolver->resolve($item)['messages'],
+                'block' => $item->getConfig()->getOption('block_name')
             ];
         }
         return $result;

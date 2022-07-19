@@ -106,6 +106,8 @@ class IndexController extends AbstractController
     {
         // creates a task object and initializes some data for this example
         $task = new Event();
+        $task->setLon(123);
+        $task->setLat(456);
         $form = $this->createForm(EventType::class, $task);
 
         $this->map = [
@@ -113,9 +115,9 @@ class IndexController extends AbstractController
         ];
 
 
-        dd($form->get('start_date'));
+        dd($form);
 
-        dd($form->get('title')->createView());
+        dd($form->createView());
 
         dd('OLOLO');
     }

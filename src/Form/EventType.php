@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Event;
+use App\Form\Fields\LocationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -34,14 +35,21 @@ class EventType extends AbstractType
                 ],
             ])
             ->add('start_date', DateTimeType::class, [
+                'help' => '<a>alalalalal</a>',
+                'block_name' => 'date',
                 'constraints' => [
                     new NotBlank(),
                 ],
             ])
-            ->add('end_date', TextType::class)
+            ->add('end_date', DateTimeType::class, [
+                'help' => '<a>alalalalal</a>',
+                'block_name' => 'date',
+                'constraints' => [
+                    new NotBlank(),
+                ],
+            ])
             ->add('image', TextType::class)
-            ->add('lat', TextType::class)
-            ->add('lon', TextType::class, [
+            ->add('location', LocationType::class, [
                 'constraints' => [
                     new NotBlank(),
                     new Length(['min' => 3]),

@@ -123,4 +123,12 @@ class Event
 
         return $this;
     }
+
+    public function getLocation(): array
+    {
+        return [
+            'lat' => $this->lat,
+            'lon' => $this->lon,
+        ];
+    }
 }

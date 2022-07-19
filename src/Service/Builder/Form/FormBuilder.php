@@ -21,18 +21,43 @@ class FormBuilder
             ]
         ]);
 
-        foreach ($serializedForm['children'] as $fieldData) {
-            $fieldElement = new Element($fieldData['type'], [
+        $formattedForm = [];
+        foreach ($serializedForm['children'] as $index => $fieldData) {
+            $key = $index;
+            if ($fieldData['block']) {
+                $key = $fieldData['block'];
+            }
+            $formattedForm[$key][] = $fieldData;
+        }
+
+
+        foreach ($formattedForm as $group) {
+            $row = new Element('ui-row', [
                 'props' => [
-                    'value' => $fieldData['value'],
-                    'name' => $fieldData['name'],
-                    'label' => $fieldData['label'],
-                    'description' => $fieldData['description'],
-                    'rules' => empty($fieldData['rules']) ? new \stdClass() : $fieldData['rules'],
-                    'messages' => empty($fieldData['messages']) ? new \stdClass() : $fieldData['messages'],
-                ],
+                    'gutter' => 10,
+                ]
             ]);
-            $root->appendChild($fieldElement);
+
+            foreach ($group as $fieldData) {
+                $col = new Element('ui-col', [
+                    'props' => [
+                        'span' => 24 / count($group),
+                    ]
+                ]);
+                $fieldElement = new Element($fieldData['type'], [
+                    'props' => [
+                        'value' => $fieldData['value'],
+                        'name' => $fieldData['name'],
+                        'label' => $fieldData['label'],
+                        'description' => $fieldData['description'],
+                        'rules' => empty($fieldData['rules']) ? new \stdClass() : $fieldData['rules'],
+                        'messages' => empty($fieldData['messages']) ? new \stdClass() : $fieldData['messages'],
+                    ],
+                ]);
+                $col->appendChild($fieldElement);
+                $row->appendChild($col);
+            }
+            $root->appendChild($row);
         }
 
         return $root;
