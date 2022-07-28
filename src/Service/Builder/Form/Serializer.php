@@ -2,6 +2,7 @@
 
 namespace App\Service\Builder\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 
@@ -21,8 +22,15 @@ class Serializer
         ];
         $items = $form->all();
         foreach ($items as $item) {
-            $normalType = substr(strrchr(get_class($item->getConfig()->getType()->getInnerType()), '\\'), 1);
+            $type = get_class($item->getConfig()->getType()->getInnerType());
+
+            if ($type === CollectionType::class) {
+                $type = $item->getConfig()->getOption('entry_type');
+            }
+
+            $normalType = substr(strrchr($type, '\\'), 1);
             $uiType = strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $normalType));
+
             $result['model'][$item->getName()] = $item->getData();
             $result['children'][$item->getName()] = [
                 'name' => $item->getName(),

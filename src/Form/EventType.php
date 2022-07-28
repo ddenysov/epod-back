@@ -3,16 +3,24 @@
 namespace App\Form;
 
 use App\Entity\Event;
+use App\Form\Fields\ImageCollectionType;
+use App\Form\Fields\ImageType;
 use App\Form\Fields\LocationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class EventType extends AbstractType
 {
@@ -51,9 +59,17 @@ class EventType extends AbstractType
                     new NotBlank(),
                 ],
             ])
-            ->add('image', TextType::class, [
+            ->add('image', FileType::class, [
                 'label' => 'Додайте кілька зображень на банер події.',
                 'help' => 'Завантажте барвисті та яскраві зображення як банер для вашої події! Подивіться, як гарні зображення допомагають вашій сторінці подій. <a class="el-link el-link--primary" href="#">Дізнайтесь більше</a>'
+            ])
+            ->add('images', ImageCollectionType::class, [
+                'constraints' => [
+                    new Count([
+                        'min' => 1,
+                        'max' => 5,
+                    ]),
+                ],
             ])
             ->add('location', LocationType::class, [
                 'label' => 'Де відбувається ваш захід?',

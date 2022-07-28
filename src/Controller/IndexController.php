@@ -67,6 +67,7 @@ class IndexController extends AbstractController
         $event->setDescription('alalal');
 
         $form = $this->createForm(EventType::class, $event);
+
         $formBuilder = new FormBuilder();
         $formElement = $formBuilder->build($form);
         $firstStep->appendChild($formElement);
@@ -132,11 +133,13 @@ class IndexController extends AbstractController
         $form = $this->createForm(EventType::class, $event);
 
         $form->submit($request->toArray());
-
         $errors = [];
         $valid = true;
+
         foreach ($form->all() as $item) {
             $errors[$item->getName()] = [];
+
+
             if(!$item->isValid()) {
                 $valid = false;
                 $errors[$item->getName()][] = $item->getErrors()->current()->getMessage();

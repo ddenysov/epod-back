@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -31,6 +33,14 @@ class Event
 
     #[ORM\Column(type: 'json')]
     private $location;
+
+    #[ORM\ManyToMany(targetEntity: Image::class, cascade: ['persist'])]
+    private $images;
+
+    public function __construct(array $params = [])
+    {
+        $this->images = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -112,9 +122,32 @@ class Event
      */
     public function setLocation($location): self
     {
-        //dd(debug_backtrace());
         $this->location = $location;
 
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+    public function addImage($image): self
+    {
+        if (is_array($image)) {
+            $image = new Image($image);
+        }
+
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+        }
+        return $this;
+    }
+    public function removeImage(Image $image): self
+    {
+        $this->images->removeElement($image);
         return $this;
     }
 }
