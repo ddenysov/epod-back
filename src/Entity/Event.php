@@ -28,9 +28,6 @@ class Event
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $end_date;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $image;
-
     #[ORM\Column(type: 'json')]
     private $location;
 

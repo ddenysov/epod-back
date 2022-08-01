@@ -4,23 +4,18 @@ namespace App\Form;
 
 use App\Entity\Event;
 use App\Form\Fields\ImageCollectionType;
-use App\Form\Fields\ImageType;
 use App\Form\Fields\LocationType;
+use App\Service\Builder\Element;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 
 class EventType extends AbstractType
 {
@@ -46,7 +41,6 @@ class EventType extends AbstractType
             ->add('start_date', DateTimeType::class, [
                 'label' => 'Коли почнеться ваша подія?',
                 'help' => 'Повідомте своїм учасникам, коли ваша подія почнеться, щоб вони могли підготуватися до участі.',
-                'block_name' => 'date',
                 'constraints' => [
                     new NotBlank(),
                 ],
@@ -54,16 +48,15 @@ class EventType extends AbstractType
             ->add('end_date', DateTimeType::class, [
                 'label' => 'Коли закінчеться ваша подія?',
                 'help' => 'Повідомте своїм учасникам, коли ваша подія завершиться, щоб вони могли спланувати свій час.',
-                'block_name' => 'date',
-                'constraints' => [
-                    new NotBlank(),
-                ],
-            ])
-            ->add('image', FileType::class, [
-                'label' => 'Додайте кілька зображень на банер події.',
-                'help' => 'Завантажте барвисті та яскраві зображення як банер для вашої події! Подивіться, як гарні зображення допомагають вашій сторінці подій. <a class="el-link el-link--primary" href="#">Дізнайтесь більше</a>'
+                'layout' => new Element('ui-switch-visible', [
+                    'props' => [
+                        'class' => 'ololo'
+                    ]
+                ]),
             ])
             ->add('images', ImageCollectionType::class, [
+                'label' => 'Додайте кілька зображень на банер події.',
+                'help' => 'Завантажте барвисті та яскраві зображення як банер для вашої події! Подивіться, як гарні зображення допомагають вашій сторінці подій. <a class="el-link el-link--primary" href="#">Дізнайтесь більше</a>',
                 'constraints' => [
                     new Count([
                         'min' => 1,

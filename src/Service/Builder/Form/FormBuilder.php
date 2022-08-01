@@ -54,6 +54,13 @@ class FormBuilder
                         'messages' => empty($fieldData['messages']) ? new \stdClass() : $fieldData['messages'],
                     ],
                 ]);
+
+                if ($fieldData['layout']) {
+                    $fieldData['layout']->appendChild($fieldElement);
+                    $fieldElement = $fieldData['layout'];
+                    unset($fieldData['layout']);
+                }
+
                 $col->appendChild($fieldElement);
                 $row->appendChild($col);
             }
