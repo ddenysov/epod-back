@@ -4,9 +4,14 @@ namespace App\Controller;
 
 use App\Component\Events\EventsList;
 use App\Entity\Event;
+use App\Form\Event\FirstStepType;
+use App\Form\Event\SearchType;
+use App\Form\Event\SecondStepType;
+use App\Form\Event\StepOneType;
 use App\Form\EventType;
 use App\Service\Builder\Element;
 use App\Service\Builder\Form\FormBuilder;
+use App\Service\Builder\TextElement;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -31,13 +36,16 @@ class IndexController extends AbstractController
 
         $body = new Element('ui-body');
         $wrapper = new Element('ui-wrapper');
-        /*        $searchSection = new Element('ui-hero-banner');
-                $select1 = new Element('ui-select');
-                $searchSection->appendChild($select1);
+
+        $form = $this->createForm(SearchType::class);
+        $formBuilder = new FormBuilder();
+        $formElement = $formBuilder->build($form);
 
 
-                //$events->setProp('filters', json_encode(['MTB', 'Road']));
-                $wrapper->appendChild($searchSection);*/
+        $wrapper->appendChild(new Element('ui-hero-banner', [], [
+            new TextElement('h2', 'ololo'),
+            $formElement
+        ]));
         $wrapper->appendChild((new EventsList())->create());
         $body->appendChild($wrapper);
 
@@ -63,22 +71,29 @@ class IndexController extends AbstractController
         ]);
 
         $event = new Event();
-        $form = $this->createForm(EventType::class, $event);
+        $form = $this->createForm(FirstStepType::class, $event);
+        $form2 = $this->createForm(SecondStepType::class, $event);
 
         $formBuilder = new FormBuilder();
         $formElement = $formBuilder->build($form);
+        $secondForm = $formBuilder->build($form2);
         $firstStep->appendChild($formElement);
 
         $steps->appendChild($firstStep);
-        $steps->appendChild(new Element('ui-step', [
+
+        $secondStep = new Element('ui-step', [
             'props' => [
-                'title' => 'Деталі',
+                'title' => 'Учасники',
                 'index' => 1,
             ]
-        ]));
+        ]);
+
+        $secondStep->appendChild($secondForm);
+
+        $steps->appendChild($secondStep);
         $steps->appendChild(new Element('ui-step', [
             'props' => [
-                'title' => 'Налаштування',
+                'title' => 'Правила',
                 'index' => 2,
             ]
         ]));

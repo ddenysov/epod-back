@@ -2,6 +2,7 @@
 
 namespace App\Service\Builder\Form;
 
+use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
@@ -31,17 +32,38 @@ class Serializer
             $normalType = substr(strrchr($type, '\\'), 1);
             $uiType = strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $normalType));
 
+            $choices = $item->getConfig()->getAttribute('choice_list');
+
+            $choicesResult = [];
+            if ($choices) {
+                /**
+                 * @var ArrayChoiceList $choices
+                 */
+                $keysList = $choices->getChoices();
+                $valuesList = $choices->getOriginalKeys();
+
+                foreach ($keysList as $key => $value) {
+                    $choicesResult[$key] = [
+                        'value' => $value,
+                        'label' => $valuesList[$key]
+                    ];
+                }
+            }
+
             $result['model'][$item->getName()] = $item->getData();
             $result['children'][$item->getName()] = [
                 'name' => $item->getName(),
                 'type' => $uiType,
                 'value' => $item->getData(),
+                'attr' => $item->getConfig()->getOption('attr'),
                 'label' => $this->resolveLabel($item),
                 'description' => $item->getConfig()->getOption('help'),
                 'rules' => $resolver->resolve($item)['rules'],
                 'messages' => $resolver->resolve($item)['messages'],
                 'block' => $item->getConfig()->getOption('block_name'),
                 'layout' => $item->getConfig()->getOption('layout'),
+                'size' => $item->getConfig()->getOption('block_size'),
+                'choices' => $choicesResult,
             ];
         }
 

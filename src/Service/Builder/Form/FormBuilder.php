@@ -39,20 +39,30 @@ class FormBuilder
             ]);
 
             foreach ($group as $fieldData) {
+                $span = 24 / count($group);
+
+                if ($fieldData['size']) {
+                    $span = $fieldData['size'];
+                }
+
                 $col = new Element('ui-col', [
                     'props' => [
-                        'span' => 24 / count($group),
+                        'span' => $span,
                     ]
                 ]);
+
+                $attrs = $fieldData['attr'] ?? [];
+
                 $fieldElement = new Element($fieldData['type'], [
-                    'props' => [
+                    'props' => array_merge([
                         'value' => $fieldData['value'],
                         'name' => $fieldData['name'],
                         'label' => $fieldData['label'],
                         'description' => $fieldData['description'],
                         'rules' => empty($fieldData['rules']) ? new \stdClass() : $fieldData['rules'],
                         'messages' => empty($fieldData['messages']) ? new \stdClass() : $fieldData['messages'],
-                    ],
+                        'choices' => $fieldData['choices']
+                    ], $attrs),
                 ]);
 
                 if ($fieldData['layout']) {

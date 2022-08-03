@@ -2,7 +2,9 @@
 
 namespace App\Service\Builder\Form;
 
+use Symfony\Component\Form\Button;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SymfonyRuleResolver
@@ -31,8 +33,14 @@ class SymfonyRuleResolver
      * @param Form $item
      * @return array
      */
-    public function resolve(Form $item): array
+    public function resolve(FormInterface $item): array
     {
+        if (get_class($item) === Button::class) {
+            return [
+                'rules' => [],
+                'messages' => [],
+            ];
+        }
         $rules = array_reduce($item->getConfig()->getOption('constraints') , function ($prev, $curr) {
             if (isset($this->mapRules()[get_class($curr)])) {
                 $val = $this->mapRules()[get_class($curr)];

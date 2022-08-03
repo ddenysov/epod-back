@@ -4,7 +4,7 @@ namespace App\Service\Builder;
 
 use JetBrains\PhpStorm\ArrayShape;
 
-class Element
+class Element implements ElementInterface
 {
     /**
      * @param string $tag
@@ -28,7 +28,7 @@ class Element
         return [
             'tag' => $this->tag,
             'input' => $this->input,
-            'children' => array_map(function (Element $child) {
+            'children' => array_map(function (ElementInterface $child) {
                 return $child->toArray();
             }, $this->children),
         ];
