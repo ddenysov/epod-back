@@ -15,6 +15,7 @@ class SearchType extends AbstractType
         $builder
             ->add('category', ChoiceType::class, [
                 'block_name' => 'search',
+                'block_size' => 10,
                 'attr' => [
                     'fullWidth' => true,
                 ],
@@ -32,11 +33,12 @@ class SearchType extends AbstractType
                 'attr' => [
                     'fullWidth' => true,
                 ],
+                'block_size' => 10,
                 'choices'  => [
                     'Всі' => null,
-                    'Легка складність' => true,
-                    'Середня складність' => false,
-                    'Важка складність' => false,
+                    'Легка складність' => 1,
+                    'Середня складність' => 2,
+                    'Важка складність' => 3,
                 ],
                 'block_name' => 'search',
             ])

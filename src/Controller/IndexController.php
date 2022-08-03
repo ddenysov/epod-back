@@ -43,7 +43,7 @@ class IndexController extends AbstractController
 
 
         $wrapper->appendChild(new Element('ui-hero-banner', [], [
-            new TextElement('h2', 'ololo'),
+            new TextElement('h2', 'Оберіть подію яка вам подобаєтся'),
             $formElement
         ]));
         $wrapper->appendChild((new EventsList())->create());
