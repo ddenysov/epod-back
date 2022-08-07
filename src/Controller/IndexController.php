@@ -46,7 +46,7 @@ class IndexController extends AbstractController
             new TextElement('h2', 'Оберіть подію яка вам подобаєтся'),
             $formElement
         ]));
-        $wrapper->appendChild((new EventsList())->create());
+        $wrapper->appendChild((new EventsList($this->container))->create());
         $body->appendChild($wrapper);
 
         $root->appendChild($body);
@@ -111,7 +111,7 @@ class IndexController extends AbstractController
     #[Route('/api/events', name: 'events')]
     public function events(): JsonResponse
     {
-        return new JsonResponse((new EventsList())->create()->toArray());
+        return new JsonResponse((new EventsList($this->container))->create()->toArray());
     }
 
     #[Route('/api/form', name: 'form_test')]

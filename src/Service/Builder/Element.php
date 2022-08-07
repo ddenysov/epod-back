@@ -7,6 +7,11 @@ use JetBrains\PhpStorm\ArrayShape;
 class Element implements ElementInterface
 {
     /**
+     * @var array
+     */
+    protected array $slots = [];
+
+    /**
      * @param string $tag
      * @param array $input
      * @param array $children
@@ -22,12 +27,14 @@ class Element implements ElementInterface
     /**
      * @return array
      */
-    #[ArrayShape(['tag' => "string", 'input' => "array", 'children' => "array"])]
-    public function toArray(): array
+    #[ArrayShape(['tag' => "string", 'input' => "array", 'slots' => "array", 'children' => "array|array[]"])] public function toArray(): array
     {
         return [
             'tag' => $this->tag,
             'input' => $this->input,
+            'slots' => array_map(function (ElementInterface $slot) {
+                return $slot->toArray();
+            }, $this->slots),
             'children' => array_map(function (ElementInterface $child) {
                 return $child->toArray();
             }, $this->children),
@@ -58,6 +65,18 @@ class Element implements ElementInterface
     public function appendChild(Element $element): static
     {
         $this->children[] = $element;
+
+        return $this;
+    }
+
+    /**
+     * @param string $slot
+     * @param Element $element
+     * @return $this
+     */
+    public function appendSlot(string $slot, Element $element): static
+    {
+        $this->slots[$slot] = $element;
 
         return $this;
     }
