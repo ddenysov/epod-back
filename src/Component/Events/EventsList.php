@@ -31,7 +31,8 @@ class EventsList
                         'label' => 'Вихідні',
                         'key' => 'weekend',
                     ],
-                ]
+                ],
+                'name' => 'events'
             ]
         ]);
         $events->appendChild(new Element('app-event-preview', [
