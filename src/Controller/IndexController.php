@@ -67,6 +67,7 @@ class IndexController extends AbstractController
             'props' => [
                 'title' => 'Деталі',
                 'index' => 0,
+                'name' => 'first_step',
             ]
         ]);
 
@@ -85,6 +86,7 @@ class IndexController extends AbstractController
             'props' => [
                 'title' => 'Учасники',
                 'index' => 1,
+                'name' => 'second_step',
             ]
         ]);
 
@@ -95,6 +97,7 @@ class IndexController extends AbstractController
             'props' => [
                 'title' => 'Правила',
                 'index' => 2,
+                'name' => 'third_step',
             ]
         ]));
 
