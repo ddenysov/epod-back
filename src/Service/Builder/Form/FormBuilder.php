@@ -13,11 +13,12 @@ class FormBuilder
         $serializer = new Serializer();
         $serializedForm = $serializer->serialize($form);
 
-
         $root = new Element('ui-form', [
             'props' => [
                 'model' => $serializedForm['model'],
                 'name' => $serializedForm['name'],
+                'action' => $serializedForm['action'],
+                'method' => $serializedForm['method'],
             ]
         ]);
 
@@ -29,7 +30,6 @@ class FormBuilder
             }
             $formattedForm[$key][] = $fieldData;
         }
-
 
         foreach ($formattedForm as $group) {
             $row = new Element('ui-row', [

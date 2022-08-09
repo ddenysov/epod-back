@@ -18,6 +18,8 @@ class Serializer
         $resolver = new SymfonyRuleResolver();
         $result = [
             'name' => $form->getName(),
+            'method' => $form->getConfig()->getMethod(),
+            'action' => $form->getConfig()->getAction(),
             'model' => [],
             'children' => [],
         ];

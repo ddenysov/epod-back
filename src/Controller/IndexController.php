@@ -7,21 +7,18 @@ use App\Entity\Event;
 use App\Form\Event\FirstStepType;
 use App\Form\Event\SearchType;
 use App\Form\Event\SecondStepType;
-use App\Form\Event\StepOneType;
 use App\Form\EventType;
 use App\Service\Builder\Element;
 use App\Service\Builder\Form\FormBuilder;
 use App\Service\Builder\TextElement;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\Validation;
+
 
 class IndexController extends AbstractController
 {
@@ -37,7 +34,10 @@ class IndexController extends AbstractController
         $body = new Element('ui-body');
         $wrapper = new Element('ui-wrapper');
 
-        $form = $this->createForm(SearchType::class);
+        $form = $this->createForm(SearchType::class, [
+            'action' => '/form/store'
+        ]);
+
         $formBuilder = new FormBuilder();
         $formElement = $formBuilder->build($form);
 
@@ -72,7 +72,10 @@ class IndexController extends AbstractController
         ]);
 
         $event = new Event();
-        $form = $this->createForm(FirstStepType::class, $event);
+        $form = $this->createForm(FirstStepType::class, $event, [
+            'action' => '/form/store',
+        ]);
+
         $form2 = $this->createForm(SecondStepType::class, $event);
 
         $formBuilder = new FormBuilder();
