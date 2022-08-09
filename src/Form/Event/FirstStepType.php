@@ -22,6 +22,14 @@ class FirstStepType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('title', TextType::class, [
+                'label' => 'Дайте назву події.',
+                'help' => 'Подивіться, як ваше ім’я відображається на сторінці події, а також список усіх місць, де використовуватиметься ваша назва події. <a class="el-link el-link--primary" href="#">Дізнатися більше</a>',
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['min' => 3]),
+                ],
+            ])
             ->add('description', TextareaType::class, [
                 'label' => 'Будь ласка, опишіть свою подію.',
                 'help' => 'Напишіть кілька слів нижче, щоб описати свою подію та надайте будь-яку додаткову інформацію, таку як розклад, маршрут або будь-які спеціальні інструкції, необхідні для відвідування вашої події.',
