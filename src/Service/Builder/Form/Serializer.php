@@ -20,6 +20,7 @@ class Serializer
             'name' => $form->getName(),
             'method' => $form->getConfig()->getMethod(),
             'action' => $form->getConfig()->getAction(),
+            'group' => $form->getConfig()->getOption('block_name'),
             'model' => [],
             'children' => [],
         ];

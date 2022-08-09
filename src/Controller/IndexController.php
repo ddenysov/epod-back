@@ -34,8 +34,10 @@ class IndexController extends AbstractController
         $body = new Element('ui-body');
         $wrapper = new Element('ui-wrapper');
 
-        $form = $this->createForm(SearchType::class, [
-            'action' => '/form/store'
+        $form = $this->createForm(SearchType::class, [], [
+            'action' => '/events',
+            'method' => 'GET',
+            'block_name' => 'events'
         ]);
 
         $formBuilder = new FormBuilder();

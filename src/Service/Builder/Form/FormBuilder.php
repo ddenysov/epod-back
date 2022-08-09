@@ -19,6 +19,7 @@ class FormBuilder
                 'name' => $serializedForm['name'],
                 'action' => $serializedForm['action'],
                 'method' => $serializedForm['method'],
+                'group' => $serializedForm['group'],
             ]
         ]);
 

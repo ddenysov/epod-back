@@ -48,7 +48,11 @@ class EventsList
             ]
         ]);
 
-        $form = $this->createForm(FilterType::class);
+        $form = $this->createForm(FilterType::class, [], [
+            'action' => '/events',
+            'method' => 'GET',
+            'block_name' => 'events'
+        ]);
         $formBuilder = new FormBuilder();
         $formElement = $formBuilder->build($form);
 
