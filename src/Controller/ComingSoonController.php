@@ -19,6 +19,7 @@ class ComingSoonController extends AbstractController
     #[Route('/api/coming-soon', name: 'coming_soon')]
     public function index(): JsonResponse
     {
+        sleep(5);
         $root = new Element('div');
 
         $body = new Element('ui-body');
